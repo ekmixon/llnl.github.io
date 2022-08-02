@@ -5,11 +5,11 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 ghDataDir = env.get("GITHUB_DATA", "../github-data")
-datfilepath = "%s/intRepos_ActivityLines.json" % ghDataDir
+datfilepath = f"{ghDataDir}/intRepos_ActivityLines.json"
 query_in = "/repos/OWNNAME/REPONAME/stats/code_frequency"
 
 # Read repo info data file (to use as repo list)
-inputLists = qm.DataManager("%s/intReposInfo.json" % ghDataDir, True)
+inputLists = qm.DataManager(f"{ghDataDir}/intReposInfo.json", True)
 # Populate repo list
 repolist = []
 print("Getting internal repos ...")
@@ -49,7 +49,7 @@ for repo in repolist:
     for item in outObj:
         # Convert unix timestamps into standard dates (rounded to nearest week to improve aggregate data)
         weekinfo = datetime.utcfromtimestamp(item[0]).isocalendar()
-        weekstring = str(weekinfo[0]) + "-W" + str(weekinfo[1]) + "-1"
+        weekstring = f"{str(weekinfo[0])}-W{str(weekinfo[1])}-1"
         item[0] = datetime.strptime(weekstring, "%Y-W%W-%w").strftime("%Y-%m-%d")
 
     # Update collective data

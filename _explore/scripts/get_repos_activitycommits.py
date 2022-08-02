@@ -4,11 +4,11 @@ import re
 from datetime import datetime
 
 ghDataDir = env.get("GITHUB_DATA", "../github-data")
-datfilepath = "%s/intRepos_ActivityCommits.json" % ghDataDir
+datfilepath = f"{ghDataDir}/intRepos_ActivityCommits.json"
 query_in = "/repos/OWNNAME/REPONAME/stats/commit_activity"
 
 # Read repo info data file (to use as repo list)
-inputLists = qm.DataManager("%s/intReposInfo.json" % ghDataDir, True)
+inputLists = qm.DataManager(f"{ghDataDir}/intReposInfo.json", True)
 # Populate repo list
 repolist = []
 print("Getting internal repos ...")
@@ -47,7 +47,7 @@ for repo in repolist:
             pass
         # Convert unix timestamps into standard dates (rounded to nearest week to improve aggregate data)
         weekinfo = datetime.utcfromtimestamp(item["week"]).isocalendar()
-        weekstring = str(weekinfo[0]) + "-W" + str(weekinfo[1]) + "-1"
+        weekstring = f"{str(weekinfo[0])}-W{str(weekinfo[1])}-1"
         item["week"] = datetime.strptime(weekstring, "%Y-W%W-%w").strftime("%Y-%m-%d")
 
     # Update collective data

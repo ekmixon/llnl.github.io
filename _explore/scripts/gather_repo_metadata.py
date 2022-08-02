@@ -1,9 +1,9 @@
 from scraper.github import queryManager as qm
 
 ghDataDir = "../../explore/github-data"
-genDatafile = "%s/intReposInfo.json" % ghDataDir
-topicsDatafile = "%s/intRepos_Topics.json" % ghDataDir
-writeFile = "%s/intRepo_Metadata.json" % ghDataDir
+genDatafile = f"{ghDataDir}/intReposInfo.json"
+topicsDatafile = f"{ghDataDir}/intRepos_Topics.json"
+writeFile = f"{ghDataDir}/intRepo_Metadata.json"
 
 # initialize data manager and load repo info
 genDataCollector = qm.DataManager(genDatafile, True)
@@ -19,20 +19,22 @@ print("\nGathering repo metadata...\n")
 # iterate through repos
 for repo in genDataCollector.data["data"]:
 
-    repoData = {}
-
     repoObj = genDataCollector.data["data"][repo]
 
-    repoData["name"] = repo
-    repoData["description"] = repoObj["description"]
-    repoData["website"] = repoObj["homepageUrl"]
+    repoData = {
+        "name": repo,
+        "description": repoObj["description"],
+        "website": repoObj["homepageUrl"],
+    }
 
     # gather any repo topics
     if repoObj["repositoryTopics"]["totalCount"] > 0:
         topicRepo = topicsCollector.data["data"][repo]
-        topics = []
-        for topicObj in topicRepo["repositoryTopics"]["nodes"]:
-            topics.append(topicObj["topic"]["name"])
+        topics = [
+            topicObj["topic"]["name"]
+            for topicObj in topicRepo["repositoryTopics"]["nodes"]
+        ]
+
         repoData["topics"] = topics
     else:
         repoData["topics"] = None

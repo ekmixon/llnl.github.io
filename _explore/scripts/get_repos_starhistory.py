@@ -3,11 +3,11 @@ from os import environ as env
 from datetime import date, timedelta
 
 ghDataDir = env.get("GITHUB_DATA", "../github-data")
-datfilepath = "%s/intRepos_StarHistory.json" % ghDataDir
+datfilepath = f"{ghDataDir}/intRepos_StarHistory.json"
 queryPath = "../queries/repo-Stargazers.gql"
 
 # Read repo info data file (to use as repo list)
-inputLists = qm.DataManager("%s/intReposInfo.json" % ghDataDir, True)
+inputLists = qm.DataManager(f"{ghDataDir}/intReposInfo.json", True)
 # Populate repo list
 repolist = []
 print("Getting internal repos ...")

@@ -3,12 +3,12 @@ from os import environ as env
 import re
 
 ghDataDir = env.get("GITHUB_DATA", "../github-data")
-datfilepath = "%s/intRepos_CreationHistory.json" % ghDataDir
+datfilepath = f"{ghDataDir}/intRepos_CreationHistory.json"
 query_commits_in = "/repos/OWNNAME/REPONAME/commits?until=CREATETIME&per_page=100"
 query_commits_in2 = "/repos/OWNNAME/REPONAME/commits?per_page=100"
 
 # Read repo info data file (to use as repo list)
-inputLists = qm.DataManager("%s/intReposInfo.json" % ghDataDir, True)
+inputLists = qm.DataManager(f"{ghDataDir}/intReposInfo.json", True)
 # Populate repo list
 repolist = []
 print("Getting internal repos ...")
@@ -33,10 +33,13 @@ for repo in repolist:
     print("\n'%s'" % (repo))
 
     # History doesn't change, only update new repos or those that had no previous commits
-    if "data" in dataCollector.data.keys() and repo in dataCollector.data["data"]:
-        if dataCollector.data["data"][repo]["firstCommitAt"]:
-            print("Already recorded data for '%s'" % (repo))
-            continue
+    if (
+        "data" in dataCollector.data
+        and repo in dataCollector.data["data"]
+        and dataCollector.data["data"][repo]["firstCommitAt"]
+    ):
+        print("Already recorded data for '%s'" % (repo))
+        continue
 
     repoData = {}  # Collect data from multiple queries for a single repo first
     r = repo.split("/")

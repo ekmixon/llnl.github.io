@@ -13,8 +13,7 @@ for aList in inputLists.data.keys():
     listWIP = [
         x.lower() for x in inputLists.data[aList]
     ]  # Standardize as all lowercase
-    listWIP = list(set(listWIP))  # Remove duplicates
-    listWIP.sort()  # List in alphabetical order
+    listWIP = sorted(set(listWIP))
     inputLists.data[aList] = listWIP
 
 inputLists.fileSave(newline="\n")

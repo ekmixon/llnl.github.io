@@ -13,7 +13,7 @@ for file in os.listdir(ghDataDir):
     if file.endswith(".json"):
         nameSplit = file.split(".")
         # Must have format "somePrefix.0000.json"
-        if not nameSplit[0] == "YEARS" and nameSplit[1].isdigit():
+        if nameSplit[0] != "YEARS" and nameSplit[1].isdigit():
             prefix = nameSplit[0]
             yearX = int(nameSplit[1])
             if prefix not in yearDict:
@@ -22,13 +22,11 @@ for file in os.listdir(ghDataDir):
 
 print("Sorting year data...")
 # Remove duplicate years (though shouldn't be possible) and sort list
-for prefix in yearDict.keys():
-    yearList = yearDict[prefix]
-    yearList = list(set(yearList))
-    yearList.sort()
+for prefix, yearList in yearDict.items():
+    yearList = sorted(set(yearList))
     yearDict[prefix] = yearList
 
-yearData = qm.DataManager("%s/YEARS.json" % ghDataDir, False)
+yearData = qm.DataManager(f"{ghDataDir}/YEARS.json", False)
 yearData.fileSave(newline="\n")
 
 print("Done!\n")
